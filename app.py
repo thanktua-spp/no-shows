@@ -2,6 +2,7 @@ from joblib import load
 import streamlit as st
 import pickle
 import pandas as pd
+import numpy as np
 
 # Load the model
 svc_model = pickle.load(open('models/SVC.sav', "rb"))
@@ -34,8 +35,8 @@ def hot_encode_inputs(inputs):
     # Fill in any missing values with 0
     while len(encoded_inputs) < len(headers):
         encoded_inputs.append(0)
-    
-    return encoded_inputs#pd.DataFrame(encoded_inputs, columns=headers)
+    np_array = pd.DataFrame([encoded_inputs], columns=headers).to_numpy().flatten()
+    return np_array#encoded_inputs
 
     
 
@@ -47,6 +48,7 @@ def make_prediction(age, scholarship, hipertension, diabetes, alcoholism, sms_re
 
     parameters = [age, awaiting_time, number_missed, sms_received, scholarship, handicap, gender, hipertension, diabetes, alcoholism]
     parameters_enc = hot_encode_inputs(parameters)
+    #st.write(parameters_enc)
     
     if selected_model == "Logistic":
         prediction = logistic_regression_model.predict([parameters_enc])[0]
@@ -99,3 +101,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+    # inputs = [27, 0, 0, 'Yes', 'Yes', 'Yes', 'Male', 'Yes', 'Yes']
+    # encoded_inputs = hot_encode_inputs(inputs)
+    # print(encoded_inputs, encoded_inputs.shape, type(encoded_inputs), encoded_inputs.flatten())
