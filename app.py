@@ -1,7 +1,7 @@
 from joblib import load
 import streamlit as st
 import pickle
-
+import pandas as pd
 
 # Load the model
 svc_model = pickle.load(open('models/SVC.sav', "rb"))
@@ -35,7 +35,7 @@ def hot_encode_inputs(inputs):
     while len(encoded_inputs) < len(headers):
         encoded_inputs.append(0)
     
-    return encoded_inputs
+    return encoded_inputs#pd.DataFrame(encoded_inputs, columns=headers)
 
     
 
