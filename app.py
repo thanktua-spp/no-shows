@@ -35,8 +35,8 @@ def hot_encode_inputs(inputs):
     # Fill in any missing values with 0
     while len(encoded_inputs) < len(headers):
         encoded_inputs.append(0)
-    np_array = pd.DataFrame([encoded_inputs], columns=headers).to_numpy().flatten()
-    return np_array#encoded_inputs
+    df = pd.DataFrame([encoded_inputs], columns=headers)[headers]
+    return df#encoded_inputs
 
     
 
@@ -51,17 +51,17 @@ def make_prediction(age, scholarship, hipertension, diabetes, alcoholism, sms_re
     #st.write(parameters_enc)
     
     if selected_model == "Logistic":
-        prediction = logistic_regression_model.predict([parameters_enc])[0]
+        prediction = logistic_regression_model.predict([parameters_enc][0])[0]
     elif selected_model == "DecisionTree":
-        prediction = decision_tree_model.predict([parameters_enc])[0]
+        prediction = decision_tree_model.predict([parameters_enc][0])[0]
     elif selected_model == "XGBoost":
-        prediction = xgb_model.predict([parameters_enc])[0]
+        prediction = xgb_model.predict([parameters_enc][0])[0]
     elif selected_model == "RandomForest":
-        prediction = randomforest_model.predict([parameters_enc])[0]
+        prediction = randomforest_model.predict([parameters_enc][0])[0]
     elif selected_model == "SVC":
-        prediction = svc_model.predict([parameters_enc])[0]
+        prediction = svc_model.predict([parameters_enc][0])[0]
     elif selected_model == "MLP":
-        prediction = mlp_model.predict([parameters_enc])[0]     
+        prediction = mlp_model.predict([parameters_enc][0])[0]     
           
     if prediction == 1: return "No shows"
     else: return "Shows"
@@ -103,5 +103,8 @@ if __name__ == '__main__':
     main()
     
     # inputs = [27, 0, 0, 'Yes', 'Yes', 'Yes', 'Male', 'Yes', 'Yes']
-    # encoded_inputs = hot_encode_inputs(inputs)
-    # print(encoded_inputs, encoded_inputs.shape, type(encoded_inputs), encoded_inputs.flatten())
+    # parameters_enc = hot_encode_inputs(inputs)
+    # print(parameters_enc)
+    # print(parameters_enc.shape)
+    # prediction = logistic_regression_model.predict([parameters_enc][0])[0]
+    # print(prediction)#, encoded_inputs.shape, type(encoded_inputs), encoded_inputs.flatten()
